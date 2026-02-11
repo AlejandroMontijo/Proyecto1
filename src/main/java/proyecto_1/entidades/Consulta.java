@@ -7,10 +7,19 @@ public class Consulta {
     private Medico medico;
     private String fecha;
 
-    public Consulta(int id, Paciente paciente, Medico medico, String fecha) {
-
-
-
+    public Consulta(int id, Paciente paciente, Medico medico, String fecha) throws Exception {
+        if (id <= 0) {
+            throw new Exception("El ID de la consulta debe ser positivo.");
+        }
+        if (paciente == null) {
+            throw new Exception("El paciente no puede ser nulo.");
+        }
+        if (medico == null) {
+            throw new Exception("El médico no puede ser nulo.");
+        }
+        if (fecha == null || fecha.trim().isEmpty()) {
+            throw new Exception("La fecha de la consulta no puede estar vacía.");
+        }
         this.id = id;
         this.paciente = paciente;
         this.medico = medico;

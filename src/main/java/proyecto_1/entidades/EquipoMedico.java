@@ -6,9 +6,16 @@ public class EquipoMedico {
     private String nombre;
     private int cantidad;
 
-    public EquipoMedico(int id, String nombre, int cantidad) {
-
-
+    public EquipoMedico(int id, String nombre, int cantidad) throws Exception {
+        if (id <= 0) {
+            throw new Exception("El ID del equipo médico debe ser positivo.");
+        }
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("El nombre del equipo médico no puede estar vacío.");
+        }
+        if (cantidad < 0) {
+            throw new Exception("La cantidad no puede ser negativa.");
+        }
         this.id = id;
         this.nombre = nombre;
         this.cantidad = cantidad;
