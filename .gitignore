@@ -1,0 +1,4 @@
+target/
+*.class
+*.txt
+.DS_Store
