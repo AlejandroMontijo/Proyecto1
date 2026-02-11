@@ -146,7 +146,7 @@ public class PanelInventario extends javax.swing.JPanel {
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            EquipoMedico eq = new EquipoMedico(0, nombre, cantidad);
+            EquipoMedico eq = new EquipoMedico(1, nombre, cantidad);
             fachada.agregarEquipoMedico(eq);
             JOptionPane.showMessageDialog(this, "Equipo agregado exitosamente.\nID asignado: " + eq.getId(),
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);

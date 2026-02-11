@@ -128,12 +128,16 @@ public class PersistenciaConsultas {
             Paciente pacReal = persPac.obtenerPacientePorId(c.getPaciente().getId());
             Medico medReal = persMed.obtenerMedicoPorId(c.getMedico().getId());
             if (pacReal != null || medReal != null) {
-                Consulta resuelta = new Consulta(
-                        c.getId(),
-                        pacReal != null ? pacReal : c.getPaciente(),
-                        medReal != null ? medReal : c.getMedico(),
-                        c.getFecha());
-                consultas.set(i, resuelta);
+                try {
+                    Consulta resuelta = new Consulta(
+                            c.getId(),
+                            pacReal != null ? pacReal : c.getPaciente(),
+                            medReal != null ? medReal : c.getMedico(),
+                            c.getFecha());
+                    consultas.set(i, resuelta);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }

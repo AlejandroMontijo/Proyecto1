@@ -135,7 +135,7 @@ public class PanelMedicos extends javax.swing.JPanel {
                 return;
             }
             try {
-                Especialidad nueva = new Especialidad(0, nombre.trim());
+                Especialidad nueva = new Especialidad(1, nombre.trim());
                 fachada.agregarEspecialidad(nueva);
                 cargarEspecialidades();
                 cmbEspecialidad.setSelectedItem(nombre.trim());
@@ -175,7 +175,7 @@ public class PanelMedicos extends javax.swing.JPanel {
         }
 
         try {
-            Medico m = new Medico(0, nombre, esp);
+            Medico m = new Medico(1, nombre, esp);
             fachada.agregarMedico(m);
             JOptionPane.showMessageDialog(this, "Médico agregado exitosamente.\nID asignado: " + m.getId(),
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);

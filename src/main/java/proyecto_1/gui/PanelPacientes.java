@@ -195,7 +195,7 @@ public class PanelPacientes extends javax.swing.JPanel {
         }
 
         try {
-            Paciente p = new Paciente(0, nombre, edad, direccion);
+            Paciente p = new Paciente(1, nombre, edad, direccion);
             fachada.agregarPaciente(p);
             JOptionPane.showMessageDialog(this, "Paciente agregado exitosamente.\nID asignado: " + p.getId(),
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);

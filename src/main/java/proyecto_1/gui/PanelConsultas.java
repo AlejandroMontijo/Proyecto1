@@ -238,7 +238,7 @@ public class PanelConsultas extends javax.swing.JPanel {
                             + "\n\n¿Confirma agendar la consulta?",
                     "Confirmar", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                Consulta c = new Consulta(0, pac, med, fecha);
+                Consulta c = new Consulta(1, pac, med, fecha);
                 fachada.programarConsulta(c);
                 JOptionPane.showMessageDialog(this, "Consulta agendada exitosamente.\nID: " + c.getId(), "Éxito",
                         JOptionPane.INFORMATION_MESSAGE);
