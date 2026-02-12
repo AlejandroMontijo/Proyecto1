@@ -28,6 +28,7 @@ public class PanelPacientes extends javax.swing.JPanel {
             }
         });
 
+        txtId.setEditable(false);
         actualizarTabla(fachada.listarPacientes());
     }
 
@@ -208,10 +209,9 @@ public class PanelPacientes extends javax.swing.JPanel {
     }
 
     private void buscarPaciente() {
-        String idStr = txtId.getText().trim();
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar.",
-                    "Aviso", JOptionPane.WARNING_MESSAGE);
+        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del paciente a buscar:", "Buscar Paciente",
+                JOptionPane.QUESTION_MESSAGE);
+        if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
         try {
