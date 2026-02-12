@@ -194,6 +194,11 @@ public class PanelInventario extends javax.swing.JPanel {
         try {
             int id = Integer.parseInt(idStr);
             int cantidad = Integer.parseInt(cantStr);
+            if (cantidad <= 0) {
+                JOptionPane.showMessageDialog(this, "La cantidad a operar debe ser positiva.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             EquipoMedico eq = fachada.obtenerEquipoPorId(id);
             if (eq == null) {
                 JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + id,
@@ -229,6 +234,11 @@ public class PanelInventario extends javax.swing.JPanel {
         try {
             int id = Integer.parseInt(idStr);
             int cantidad = Integer.parseInt(cantStr);
+            if (cantidad <= 0) {
+                JOptionPane.showMessageDialog(this, "La cantidad a operar debe ser positiva.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             EquipoMedico eq = fachada.obtenerEquipoPorId(id);
             if (eq == null) {
                 JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + id,

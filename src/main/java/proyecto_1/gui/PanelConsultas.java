@@ -209,13 +209,22 @@ public class PanelConsultas extends javax.swing.JPanel {
             int idMed = Integer.parseInt(txtAgIdMed.getText().trim());
             String fecha = txtAgFecha.getText().trim();
 
-            if (fecha.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "La fecha es obligatoria.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (fecha.matches("\\d{2}/\\d{2}/\\d{4}") == false) {
+            try {
+                java.time.LocalDate fechaCons = java.time.LocalDate.parse(fecha,
+                        java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (fechaCons.isBefore(java.time.LocalDate.now())) {
+                    JOptionPane.showMessageDialog(this, "La fecha no puede ser anterior a hoy.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use dd/MM/yyyy", "Error",
                         JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (fecha.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La fecha es obligatoria.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
