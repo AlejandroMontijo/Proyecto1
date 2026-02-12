@@ -72,7 +72,7 @@ public class PanelMedicos extends javax.swing.JPanel {
 
         lblId.setText("ID:");
         panelCampos.add(lblId);
-        txtId.setColumns(10);
+        txtId.setEditable(false);
         panelCampos.add(txtId);
         lblNombre.setText("Nombre:");
         panelCampos.add(lblNombre);
@@ -188,10 +188,9 @@ public class PanelMedicos extends javax.swing.JPanel {
     }
 
     private void buscarMedico() {
-        String idStr = txtId.getText().trim();
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar.",
-                    "Aviso", JOptionPane.WARNING_MESSAGE);
+        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del médico a buscar:", "Buscar Médico",
+                JOptionPane.QUESTION_MESSAGE);
+        if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
         try {

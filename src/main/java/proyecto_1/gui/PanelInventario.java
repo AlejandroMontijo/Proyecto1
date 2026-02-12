@@ -61,11 +61,11 @@ public class PanelInventario extends javax.swing.JPanel {
         panelSuperior.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del Equipo Médico"));
         panelSuperior.setLayout(new java.awt.BorderLayout(5, 5));
 
-        panelCampos.setLayout(new java.awt.GridLayout(2, 4, 5, 5));
+        panelCampos.setLayout(new java.awt.GridLayout(0, 2, 5, 5));
 
         lblId.setText("ID:");
         panelCampos.add(lblId);
-        txtId.setColumns(10);
+        txtId.setEditable(false);
         panelCampos.add(txtId);
         lblNombre.setText("Nombre:");
         panelCampos.add(lblNombre);
@@ -159,10 +159,9 @@ public class PanelInventario extends javax.swing.JPanel {
     }
 
     private void buscarEquipo() {
-        String idStr = txtId.getText().trim();
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar.",
-                    "Aviso", JOptionPane.WARNING_MESSAGE);
+        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del equipo a buscar:", "Buscar Equipo",
+                JOptionPane.QUESTION_MESSAGE);
+        if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
         try {
