@@ -28,7 +28,6 @@ public class PanelPacientes extends javax.swing.JPanel {
             }
         });
 
-        txtId.setEditable(false);
         actualizarTabla(fachada.listarPacientes());
     }
 
