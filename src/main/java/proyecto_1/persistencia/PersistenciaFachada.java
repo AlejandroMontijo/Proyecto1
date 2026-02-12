@@ -21,10 +21,6 @@ public class PersistenciaFachada implements IPersistenciaFachada {
         persistenciaMedicos = new PersistenciaMedicos();
         persistenciaInventarios = new PersistenciaInventarios();
         persistenciaConsultas = new PersistenciaConsultas();
-
-        // resolver referencias despues de cargar todo
-        persistenciaMedicos.resolverEspecialidades(persistenciaEspecialidades);
-        persistenciaConsultas.resolverReferencias(persistenciaPacientes, persistenciaMedicos);
     }
 
     // --- Pacientes (diagrama) ---

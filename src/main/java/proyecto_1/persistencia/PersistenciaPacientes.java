@@ -1,7 +1,6 @@
 package proyecto_1.persistencia;
 
 import proyecto_1.entidades.Paciente;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,17 +8,14 @@ import java.util.stream.Collectors;
 public class PersistenciaPacientes {
 
     private ArrayList<Paciente> pacientes = new ArrayList<>();
-    private final String archivo = "pacientes.txt";
 
     public PersistenciaPacientes() {
-        cargarArchivo();
     }
 
     public void agregarPaciente(Paciente paciente) {
         int nuevoId = pacientes.isEmpty() ? 1 : pacientes.get(pacientes.size() - 1).getId() + 1;
         paciente.setId(nuevoId);
         pacientes.add(paciente);
-        guardarArchivo();
     }
 
     public Paciente obtenerPacientePorId(int id) {
@@ -40,7 +36,6 @@ public class PersistenciaPacientes {
         for (int i = 0; i < pacientes.size(); i++) {
             if (pacientes.get(i).getId() == actualizado.getId()) {
                 pacientes.set(i, actualizado);
-                guardarArchivo();
                 return true;
             }
         }
@@ -51,7 +46,6 @@ public class PersistenciaPacientes {
         for (int i = 0; i < pacientes.size(); i++) {
             if (pacientes.get(i).getId() == id) {
                 pacientes.remove(i);
-                guardarArchivo();
                 return true;
             }
         }
@@ -77,35 +71,4 @@ public class PersistenciaPacientes {
                 .collect(Collectors.toList());
     }
 
-    private void guardarArchivo() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo))) {
-            for (Paciente p : pacientes) {
-                pw.println(p.getId() + "|" + p.getNombre() + "|" + p.getEdad() + "|" + p.getDireccion());
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void cargarArchivo() {
-        File file = new File(archivo);
-        if (file.exists() == false)
-            return;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] partes = linea.split("\\|");
-                if (partes.length >= 4) {
-                    Paciente p = new Paciente(
-                            Integer.parseInt(partes[0]),
-                            partes[1],
-                            Integer.parseInt(partes[2]),
-                            partes[3]);
-                    pacientes.add(p);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }
