@@ -9,6 +9,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal() {
         fachada = new PersistenciaFachada();
         initComponents();
+        panelEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setSize(900, 650);
 
         // agregar pestañas con paneles personalizados
