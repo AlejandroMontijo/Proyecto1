@@ -9,6 +9,7 @@ import java.util.List;
 public class PanelPacientes extends javax.swing.JPanel {
 
     private PersistenciaFachada fachada;
+    private int idSeleccionado = -1;
     private DefaultTableModel modeloTabla;
 
     public PanelPacientes(PersistenciaFachada fachada) {
@@ -28,7 +29,6 @@ public class PanelPacientes extends javax.swing.JPanel {
             }
         });
 
-        txtId.setEditable(false);
         actualizarTabla(fachada.listarPacientes());
     }
 
@@ -38,6 +38,7 @@ public class PanelPacientes extends javax.swing.JPanel {
 
         panelSuperior = new javax.swing.JPanel();
         panelCampos = new javax.swing.JPanel();
+
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
@@ -73,7 +74,6 @@ public class PanelPacientes extends javax.swing.JPanel {
         panelSuperior.setLayout(new java.awt.BorderLayout(5, 5));
 
         panelCampos.setLayout(new java.awt.GridLayout(2, 4, 5, 5));
-
         lblId.setText("ID:");
         panelCampos.add(lblId);
         txtId.setColumns(10);
@@ -209,8 +209,11 @@ public class PanelPacientes extends javax.swing.JPanel {
     }
 
     private void buscarPaciente() {
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del paciente a buscar:", "Buscar Paciente",
-                JOptionPane.QUESTION_MESSAGE);
+        String idStr = txtId.getText().trim();
+        if (idStr.isEmpty()) {
+            idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del paciente a buscar:", "Buscar Paciente",
+                    JOptionPane.QUESTION_MESSAGE);
+        }
         if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
@@ -218,6 +221,8 @@ public class PanelPacientes extends javax.swing.JPanel {
             int id = Integer.parseInt(idStr);
             Paciente p = fachada.obtenerPacientePorId(id);
             if (p != null) {
+                idSeleccionado = id;
+                txtId.setText(String.valueOf(p.getId()));
                 txtNombre.setText(p.getNombre());
                 txtEdad.setText(String.valueOf(p.getEdad()));
                 txtDireccion.setText(p.getDireccion());
@@ -234,17 +239,15 @@ public class PanelPacientes extends javax.swing.JPanel {
     }
 
     private void actualizarPaciente() {
-        String idStr = txtId.getText().trim();
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Primero busque un paciente por ID.",
+        if (idSeleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un paciente de la tabla para actualizar.",
                     "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
-            int id = Integer.parseInt(idStr);
-            Paciente existente = fachada.obtenerPacientePorId(id);
+            Paciente existente = fachada.obtenerPacientePorId(idSeleccionado);
             if (existente == null) {
-                JOptionPane.showMessageDialog(this, "No existe un paciente con ID: " + id,
+                JOptionPane.showMessageDialog(this, "No existe un paciente con ID: " + idSeleccionado,
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -263,7 +266,7 @@ public class PanelPacientes extends javax.swing.JPanel {
                             "\n\n¿Confirmar actualización?",
                     "Confirmar Actualización", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                Paciente actualizado = new Paciente(id, nombre, edad, direccion);
+                Paciente actualizado = new Paciente(idSeleccionado, nombre, edad, direccion);
                 if (fachada.actualizarPaciente(actualizado)) {
                     JOptionPane.showMessageDialog(this, "Paciente actualizado exitosamente.",
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -278,17 +281,15 @@ public class PanelPacientes extends javax.swing.JPanel {
     }
 
     private void eliminarPaciente() {
-        String idStr = txtId.getText().trim();
-        if (idStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID para eliminar.",
+        if (idSeleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un paciente para eliminar.",
                     "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
-            int id = Integer.parseInt(idStr);
-            Paciente p = fachada.obtenerPacientePorId(id);
+            Paciente p = fachada.obtenerPacientePorId(idSeleccionado);
             if (p == null) {
-                JOptionPane.showMessageDialog(this, "No existe un paciente con ID: " + id,
+                JOptionPane.showMessageDialog(this, "No existe un paciente con ID: " + idSeleccionado,
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -296,7 +297,7 @@ public class PanelPacientes extends javax.swing.JPanel {
                     "¿Está seguro de eliminar al paciente?\n\n" + p.toString(),
                     "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (resp == JOptionPane.YES_OPTION) {
-                if (fachada.eliminarPaciente(id)) {
+                if (fachada.eliminarPaciente(idSeleccionado)) {
                     JOptionPane.showMessageDialog(this, "Paciente eliminado exitosamente.",
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     limpiarCampos();
@@ -370,6 +371,8 @@ public class PanelPacientes extends javax.swing.JPanel {
     }
 
     private void limpiarCampos() {
+        idSeleccionado = -1;
+        tabla.clearSelection();
         txtId.setText("");
         txtNombre.setText("");
         txtEdad.setText("");
@@ -392,6 +395,7 @@ public class PanelPacientes extends javax.swing.JPanel {
     private javax.swing.JLabel lblFiltroDireccion;
     private javax.swing.JLabel lblFiltroEdadMax;
     private javax.swing.JLabel lblFiltroEdadMin;
+
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel panelBotones;

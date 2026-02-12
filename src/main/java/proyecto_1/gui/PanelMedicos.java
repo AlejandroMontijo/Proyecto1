@@ -11,6 +11,7 @@ public class PanelMedicos extends javax.swing.JPanel {
 
     private PersistenciaFachada fachada;
     private DefaultTableModel modeloTabla;
+    private int idSeleccionado = -1;
 
     public PanelMedicos(PersistenciaFachada fachada) {
         this.fachada = fachada;
@@ -23,8 +24,13 @@ public class PanelMedicos extends javax.swing.JPanel {
             if (e.getValueIsAdjusting() == false) {
                 int fila = tabla.getSelectedRow();
                 if (fila >= 0) {
-                    txtId.setText(modeloTabla.getValueAt(fila, 0).toString());
-                    txtNombre.setText(modeloTabla.getValueAt(fila, 1).toString());
+                    try {
+                        idSeleccionado = Integer.parseInt(tabla.getValueAt(fila, 0).toString());
+                        txtId.setText(tabla.getValueAt(fila, 0).toString());
+                        txtNombre.setText(tabla.getValueAt(fila, 1).toString());
+                        cmbEspecialidad.setSelectedItem(tabla.getValueAt(fila, 2).toString());
+                    } catch (Exception ex) {
+                    }
                 }
             }
         });
@@ -46,6 +52,7 @@ public class PanelMedicos extends javax.swing.JPanel {
 
         panelSuperior = new javax.swing.JPanel();
         panelCampos = new javax.swing.JPanel();
+
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
@@ -72,7 +79,7 @@ public class PanelMedicos extends javax.swing.JPanel {
 
         lblId.setText("ID:");
         panelCampos.add(lblId);
-        txtId.setEditable(false);
+        txtId.setColumns(10);
         panelCampos.add(txtId);
         lblNombre.setText("Nombre:");
         panelCampos.add(lblNombre);
@@ -188,8 +195,11 @@ public class PanelMedicos extends javax.swing.JPanel {
     }
 
     private void buscarMedico() {
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del médico a buscar:", "Buscar Médico",
-                JOptionPane.QUESTION_MESSAGE);
+        String idStr = txtId.getText().trim();
+        if (idStr.isEmpty()) {
+            idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del médico a buscar:", "Buscar Médico",
+                    JOptionPane.QUESTION_MESSAGE);
+        }
         if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
@@ -197,6 +207,8 @@ public class PanelMedicos extends javax.swing.JPanel {
             int id = Integer.parseInt(idStr);
             Medico m = fachada.obtenerMedicoPorId(id);
             if (m != null) {
+                idSeleccionado = id;
+                txtId.setText(String.valueOf(m.getId()));
                 txtNombre.setText(m.getNombre());
                 if (m.getEspecialidad() != null) {
                     cmbEspecialidad.setSelectedItem(m.getEspecialidad().getNombre());
@@ -223,6 +235,8 @@ public class PanelMedicos extends javax.swing.JPanel {
     }
 
     private void limpiarCampos() {
+        idSeleccionado = -1;
+        tabla.clearSelection();
         txtId.setText("");
         txtNombre.setText("");
         if (cmbEspecialidad.getItemCount() > 0) {

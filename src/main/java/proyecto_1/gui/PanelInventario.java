@@ -10,6 +10,7 @@ public class PanelInventario extends javax.swing.JPanel {
 
     private PersistenciaFachada fachada;
     private DefaultTableModel modeloTabla;
+    private int idSeleccionado = -1;
 
     public PanelInventario(PersistenciaFachada fachada) {
         this.fachada = fachada;
@@ -36,6 +37,7 @@ public class PanelInventario extends javax.swing.JPanel {
 
         panelSuperior = new javax.swing.JPanel();
         panelCampos = new javax.swing.JPanel();
+
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
@@ -65,7 +67,7 @@ public class PanelInventario extends javax.swing.JPanel {
 
         lblId.setText("ID:");
         panelCampos.add(lblId);
-        txtId.setEditable(false);
+        txtId.setColumns(10);
         panelCampos.add(txtId);
         lblNombre.setText("Nombre:");
         panelCampos.add(lblNombre);
@@ -159,8 +161,11 @@ public class PanelInventario extends javax.swing.JPanel {
     }
 
     private void buscarEquipo() {
-        String idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del equipo a buscar:", "Buscar Equipo",
-                JOptionPane.QUESTION_MESSAGE);
+        String idStr = txtId.getText().trim();
+        if (idStr.isEmpty()) {
+            idStr = JOptionPane.showInputDialog(this, "Ingrese el ID del equipo a buscar:", "Buscar Equipo",
+                    JOptionPane.QUESTION_MESSAGE);
+        }
         if (idStr == null || idStr.trim().isEmpty()) {
             return;
         }
@@ -168,6 +173,8 @@ public class PanelInventario extends javax.swing.JPanel {
             int id = Integer.parseInt(idStr);
             EquipoMedico eq = fachada.obtenerEquipoPorId(id);
             if (eq != null) {
+                idSeleccionado = id;
+                txtId.setText(String.valueOf(eq.getId()));
                 txtNombre.setText(eq.getNombre());
                 txtCantidad.setText(String.valueOf(eq.getCantidad()));
                 JOptionPane.showMessageDialog(this, "Equipo encontrado:\n" + eq.toString(),
@@ -183,24 +190,27 @@ public class PanelInventario extends javax.swing.JPanel {
     }
 
     private void inventariar() {
-        String idStr = txtId.getText().trim();
+        if (idSeleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un equipo de la tabla.",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         String cantStr = txtCantidadOperacion.getText().trim();
-        if (idStr.isEmpty() || cantStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un equipo y escriba la cantidad.",
+        if (cantStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escriba la cantidad a sumar.",
                     "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
-            int id = Integer.parseInt(idStr);
             int cantidad = Integer.parseInt(cantStr);
             if (cantidad <= 0) {
                 JOptionPane.showMessageDialog(this, "La cantidad a operar debe ser positiva.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            EquipoMedico eq = fachada.obtenerEquipoPorId(id);
+            EquipoMedico eq = fachada.obtenerEquipoPorId(idSeleccionado);
             if (eq == null) {
-                JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + id,
+                JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + idSeleccionado,
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -209,8 +219,8 @@ public class PanelInventario extends javax.swing.JPanel {
                             + "\n\n¿Sumar " + cantidad + " unidades?",
                     "Confirmar Inventariar", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                fachada.actualizarCantidadEquipo(id, cantidad);
-                EquipoMedico act = fachada.obtenerEquipoPorId(id);
+                fachada.actualizarCantidadEquipo(idSeleccionado, cantidad);
+                EquipoMedico act = fachada.obtenerEquipoPorId(idSeleccionado);
                 JOptionPane.showMessageDialog(this, "Stock actualizado.\nNuevo stock: " + act.getCantidad(),
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 txtCantidad.setText(String.valueOf(act.getCantidad()));
@@ -223,24 +233,27 @@ public class PanelInventario extends javax.swing.JPanel {
     }
 
     private void desinventariar() {
-        String idStr = txtId.getText().trim();
+        if (idSeleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un equipo de la tabla.",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         String cantStr = txtCantidadOperacion.getText().trim();
-        if (idStr.isEmpty() || cantStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un equipo y escriba la cantidad.",
+        if (cantStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escriba la cantidad a restar.",
                     "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
-            int id = Integer.parseInt(idStr);
             int cantidad = Integer.parseInt(cantStr);
             if (cantidad <= 0) {
                 JOptionPane.showMessageDialog(this, "La cantidad a operar debe ser positiva.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            EquipoMedico eq = fachada.obtenerEquipoPorId(id);
+            EquipoMedico eq = fachada.obtenerEquipoPorId(idSeleccionado);
             if (eq == null) {
-                JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + id,
+                JOptionPane.showMessageDialog(this, "No existe equipo con ID: " + idSeleccionado,
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -255,8 +268,8 @@ public class PanelInventario extends javax.swing.JPanel {
                             + "\n\n¿Restar " + cantidad + " unidades?",
                     "Confirmar Desinventariar", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                fachada.actualizarCantidadEquipo(id, -cantidad);
-                EquipoMedico act = fachada.obtenerEquipoPorId(id);
+                fachada.actualizarCantidadEquipo(idSeleccionado, -cantidad);
+                EquipoMedico act = fachada.obtenerEquipoPorId(idSeleccionado);
                 JOptionPane.showMessageDialog(this, "Stock actualizado.\nNuevo stock: " + act.getCantidad(),
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 txtCantidad.setText(String.valueOf(act.getCantidad()));
@@ -277,6 +290,8 @@ public class PanelInventario extends javax.swing.JPanel {
     }
 
     private void limpiarCampos() {
+        idSeleccionado = -1;
+        tabla.clearSelection();
         txtId.setText("");
         txtNombre.setText("");
         txtCantidad.setText("");
