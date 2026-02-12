@@ -223,11 +223,6 @@ public class PanelConsultas extends javax.swing.JPanel {
                 return;
             }
 
-            if (fecha.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "La fecha es obligatoria.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             Paciente pac = fachada.obtenerPacientePorId(idPac);
             Medico med = fachada.obtenerMedicoPorId(idMed);
 

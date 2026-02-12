@@ -1,6 +1,5 @@
 package proyecto_1.persistencia;
 
-import proyecto_1.entidades.Especialidad;
 import proyecto_1.entidades.Medico;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +29,4 @@ public class PersistenciaMedicos {
         return new ArrayList<>(medicos);
     }
 
-    // resolver referencias de especialidades despues de cargar
-    public void resolverEspecialidades(PersistenciaEspecialidades persEsp) {
-        for (Medico m : medicos) {
-            if (m.getEspecialidad() != null) {
-                Especialidad real = persEsp.obtenerEspecialidadPorId(m.getEspecialidad().getId());
-                if (real != null)
-                    m.setEspecialidad(real);
-            }
-        }
-    }
 }

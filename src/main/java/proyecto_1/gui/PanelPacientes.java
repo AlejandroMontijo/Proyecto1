@@ -21,6 +21,7 @@ public class PanelPacientes extends javax.swing.JPanel {
             if (e.getValueIsAdjusting() == false) {
                 int fila = tabla.getSelectedRow();
                 if (fila >= 0) {
+                    idSeleccionado = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
                     txtId.setText(modeloTabla.getValueAt(fila, 0).toString());
                     txtNombre.setText(modeloTabla.getValueAt(fila, 1).toString());
                     txtEdad.setText(modeloTabla.getValueAt(fila, 2).toString());
