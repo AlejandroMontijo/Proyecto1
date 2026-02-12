@@ -20,7 +20,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         tabbedPane = new javax.swing.JTabbedPane();
@@ -30,15 +30,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Gestión Hospitalaria");
         setMinimumSize(new java.awt.Dimension(800, 550));
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
-        tabbedPane.setFont(new java.awt.Font("SansSerif", 0, 13));
+        tabbedPane.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 
-        panelEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panelEstado.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        lblEstado.setText("Sistema Hospitalario - Proyecto 1");
         panelEstado.add(lblEstado);
 
         getContentPane().add(panelEstado, java.awt.BorderLayout.PAGE_END);
