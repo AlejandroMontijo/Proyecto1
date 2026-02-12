@@ -153,7 +153,7 @@ public class PanelConsultas extends javax.swing.JPanel {
             Paciente p = fachada.obtenerPacientePorId(id);
             if (p == null) {
                 JOptionPane.showMessageDialog(this, "No existe paciente con ID: " + id, "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.ERROR_MESSAGE);////
                 return;
             }
             List<Consulta> resultado = fachada.consultasPorPaciente(id);
