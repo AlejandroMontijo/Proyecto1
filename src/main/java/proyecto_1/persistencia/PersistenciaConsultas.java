@@ -1,8 +1,7 @@
 package proyecto_1.persistencia;
 
 import proyecto_1.entidades.Consulta;
-import proyecto_1.entidades.Medico;
-import proyecto_1.entidades.Paciente;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,6 +76,4 @@ public class PersistenciaConsultas {
             return new ArrayList<>();
         }
     }
-
-
 }

@@ -11,7 +11,6 @@ public class PanelMedicos extends javax.swing.JPanel {
 
     private PersistenciaFachada fachada;
     private DefaultTableModel modeloTabla;
-    private int idSeleccionado = -1;
 
     public PanelMedicos(PersistenciaFachada fachada) {
         this.fachada = fachada;
@@ -25,7 +24,6 @@ public class PanelMedicos extends javax.swing.JPanel {
                 int fila = tabla.getSelectedRow();
                 if (fila >= 0) {
                     try {
-                        idSeleccionado = Integer.parseInt(tabla.getValueAt(fila, 0).toString());
                         txtId.setText(tabla.getValueAt(fila, 0).toString());
                         txtNombre.setText(tabla.getValueAt(fila, 1).toString());
                         cmbEspecialidad.setSelectedItem(tabla.getValueAt(fila, 2).toString());
@@ -207,7 +205,6 @@ public class PanelMedicos extends javax.swing.JPanel {
             int id = Integer.parseInt(idStr);
             Medico m = fachada.obtenerMedicoPorId(id);
             if (m != null) {
-                idSeleccionado = id;
                 txtId.setText(String.valueOf(m.getId()));
                 txtNombre.setText(m.getNombre());
                 if (m.getEspecialidad() != null) {
@@ -235,7 +232,6 @@ public class PanelMedicos extends javax.swing.JPanel {
     }
 
     private void limpiarCampos() {
-        idSeleccionado = -1;
         tabla.clearSelection();
         txtId.setText("");
         txtNombre.setText("");

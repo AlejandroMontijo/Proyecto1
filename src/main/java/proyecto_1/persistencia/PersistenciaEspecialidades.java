@@ -13,8 +13,12 @@ public class PersistenciaEspecialidades {
 
     public void agregarEspecialidad(Especialidad especialidad) {
         int nuevoId = especialidades.isEmpty() ? 1 : especialidades.get(especialidades.size() - 1).getId() + 1;
-        Especialidad nueva = new Especialidad(nuevoId, especialidad.getNombre());
-        especialidades.add(nueva);
+        try {
+            Especialidad nueva = new Especialidad(nuevoId, especialidad.getNombre());
+            especialidades.add(nueva);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public Especialidad obtenerEspecialidadPorId(int id) {
