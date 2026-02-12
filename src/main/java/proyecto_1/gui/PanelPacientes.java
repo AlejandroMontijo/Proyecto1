@@ -28,6 +28,7 @@ public class PanelPacientes extends javax.swing.JPanel {
             }
         });
 
+        txtId.setEditable(false);
         actualizarTabla(fachada.listarPacientes());
     }
 
@@ -258,7 +259,9 @@ public class PanelPacientes extends javax.swing.JPanel {
             }
             int edad = Integer.parseInt(edadStr);
             int resp = JOptionPane.showConfirmDialog(this,
-                    "¿Desea actualizar los datos del paciente ID " + id + "?",
+                    "DATOS ACTUALES:\n" + existente.toString() +
+                            "\n\nNUEVOS DATOS:\nNombre: " + nombre + "\nEdad: " + edad + "\nDirección: " + direccion +
+                            "\n\n¿Confirmar actualización?",
                     "Confirmar Actualización", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
                 Paciente actualizado = new Paciente(id, nombre, edad, direccion);
